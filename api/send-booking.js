@@ -86,7 +86,7 @@ export default async function handler(req, res) {
   try {
     await resend.emails.send({
       from: 'Booking <onboarding@resend.dev>',
-      to: 'nkuma.021996@gmail.com',
+      to: 'imnaveenkumar.1996@gmail.com',
       subject: '🚖 New Cab Booking - Shree Ganesh',
       html,
     });
