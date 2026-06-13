@@ -1059,113 +1059,6 @@
       z-index: 1;
     }
 
-    /* ── THANK YOU PANEL ── */
-    @keyframes thanksFadeIn {
-      from { opacity: 0; transform: translateY(14px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    #bookingThanks {
-      animation: thanksFadeIn 0.4s ease forwards;
-      text-align: center;
-      padding: 8px 0 4px;
-    }
-
-    .thanks-icon {
-      font-size: 58px;
-      line-height: 1;
-      margin-bottom: 16px;
-    }
-
-    .thanks-heading {
-      font-family: var(--font-display);
-      font-size: 26px;
-      font-weight: 700;
-      color: var(--navy);
-      margin-bottom: 10px;
-    }
-
-    .thanks-sub {
-      color: var(--slate);
-      font-size: 15px;
-      max-width: 420px;
-      margin: 0 auto 28px;
-      line-height: 1.6;
-    }
-
-    .thanks-table {
-      width: 100%;
-      border-collapse: collapse;
-      text-align: left;
-      margin-bottom: 28px;
-    }
-
-    .thanks-table tr { border-bottom: 1px solid var(--border); }
-    .thanks-table tr:last-child { border-bottom: none; }
-
-    .thanks-table td:first-child {
-      padding: 11px 16px 11px 0;
-      color: var(--slate);
-      font-size: 14px;
-      width: 42%;
-    }
-
-    .thanks-table td:last-child {
-      padding: 11px 0;
-      font-weight: 600;
-      color: var(--navy);
-      font-size: 14px;
-    }
-
-    .thanks-actions {
-      display: flex;
-      gap: 12px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .btn-thanks-wa {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 14px 28px;
-      background: var(--wa);
-      color: var(--white);
-      border-radius: var(--radius-md);
-      font-size: 15px;
-      font-weight: 700;
-      font-family: var(--font-body);
-      text-decoration: none;
-      transition: background var(--transition), transform var(--transition);
-    }
-
-    .btn-thanks-wa:hover {
-      background: var(--wa-dark);
-      transform: translateY(-2px);
-    }
-
-    .btn-thanks-new {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 14px 28px;
-      background: transparent;
-      color: var(--navy);
-      border: 2px solid var(--border);
-      border-radius: var(--radius-md);
-      font-size: 15px;
-      font-weight: 600;
-      font-family: var(--font-body);
-      cursor: pointer;
-      transition: border-color var(--transition), color var(--transition), transform var(--transition);
-    }
-
-    .btn-thanks-new:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-      transform: translateY(-2px);
-    }
-
     /* ═══════════════════════════════════════════════
    STATS STRIP
 ═══════════════════════════════════════════════ */
@@ -3174,20 +3067,6 @@
         </div>
       </form>
 
-      <!-- THANK YOU PANEL (shown after successful submission) -->
-      <div id="bookingThanks" style="display:none;">
-        <div class="thanks-icon">✅</div>
-        <h2 class="thanks-heading">Booking Request Sent!</h2>
-        <p class="thanks-sub">We've received your request and will confirm within 2 minutes on WhatsApp.</p>
-        <table class="thanks-table">
-          <tbody id="thanksSummary"></tbody>
-        </table>
-        <div class="thanks-actions">
-          <a id="thanksWaBtn" href="#" target="_blank" class="btn-thanks-wa">💬 Open WhatsApp</a>
-          <button type="button" class="btn-thanks-new" onclick="resetBookingForm()">📋 New Booking</button>
-        </div>
-      </div>
-
     </div>
   </section>
 
@@ -3929,7 +3808,7 @@
     document.getElementById('fPickupTime').value = minDT;
     document.getElementById('fReturnTime').min = minDT;
 
-    // ── BOOKING FORM → EMAIL + WHATSAPP + THANK YOU PANEL ──
+    // ── BOOKING FORM → EMAIL + WHATSAPP ──
     document.getElementById('bookingForm').addEventListener('submit', function (e) {
       e.preventDefault();
       const pickup = document.getElementById('fPickup').value.trim();
@@ -3966,33 +3845,8 @@
       const msg = `🙏 *New Booking Request*\n*Shree Ganesh Tour & Travels*\n\n🗺️ *Trip Type:* ${tripType}\n📍 *Pickup:* ${pickup}\n📍 *Drop:* ${drop}\n📅 *Pickup Date & Time:* ${fmt(pTime)}\n${currentTrip === 'roundtrip' ? `🔄 *Return Date & Time:* ${fmt(rTime)}\n` : ''}🚗 *Car:* ${car}\n👥 *Passengers:* ${pass}\n\nPlease confirm availability & fare. Thank you!`;
       const waUrl = 'https://wa.me/919288427458?text=' + encodeURIComponent(msg);
       window.open(waUrl, '_blank');
-
-      // Populate thank-you summary table
-      const rows = [
-        ['🗺️ Trip Type', tripType],
-        ['📍 Pickup', pickup],
-        ['📍 Drop', drop],
-        ['📅 Pickup Time', fmt(pTime)],
-        ...(rTime ? [['🔄 Return Time', fmt(rTime)]] : []),
-        ['🚗 Car', car],
-        ['👥 Passengers', pass],
-      ];
-      document.getElementById('thanksSummary').innerHTML = rows
-        .map(([label, value]) => `<tr><td>${label}</td><td>${value}</td></tr>`)
-        .join('');
-      document.getElementById('thanksWaBtn').href = waUrl;
-
-      // Swap form → thank-you panel
-      document.getElementById('bookingForm').style.display = 'none';
-      document.getElementById('bookingThanks').style.display = 'block';
+      setTimeout(() => { window.location.href = '/thank-you.html'; }, 600);
     });
-
-    function resetBookingForm() {
-      document.getElementById('bookingForm').reset();
-      document.getElementById('bookingForm').style.display = 'block';
-      document.getElementById('bookingThanks').style.display = 'none';
-      setTrip('oneway');
-    }
 
     // ── FAQ ACCORDION ──
     function toggleFaq(btn) {
