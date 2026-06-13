@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Booking Received | Shree Ganesh Tour & Travels</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --accent: #E8650A;
+      --accent-dark: #C4520A;
+      --navy: #0D1F35;
+      --wa: #25D366;
+      --wa-dark: #1aaa52;
+      --slate: #4B5563;
+      --font-display: 'Playfair Display', Georgia, serif;
+      --font-body: 'DM Sans', sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-body);
+      background: linear-gradient(135deg, var(--navy) 0%, #162840 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .card {
+      background: #fff;
+      border-radius: 22px;
+      padding: 48px 40px;
+      max-width: 480px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,.25);
+    }
+    .check {
+      width: 80px;
+      height: 80px;
+      background: #EEFBF3;
+      border: 2px solid var(--wa);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+      font-size: 40px;
+    }
+    h1 {
+      font-family: var(--font-display);
+      font-size: 28px;
+      color: var(--navy);
+      margin-bottom: 12px;
+    }
+    p {
+      font-size: 15px;
+      color: var(--slate);
+      line-height: 1.7;
+      margin-bottom: 28px;
+    }
+    .btns {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 14px;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 15px;
+      text-decoration: none;
+      transition: transform .2s ease;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-wa { background: var(--wa); color: #fff; }
+    .btn-wa:hover { background: var(--wa-dark); }
+    .btn-home { background: var(--navy); color: #fff; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="check">✅</div>
+    <h1>Booking Request Received!</h1>
+    <p>Thank you for choosing <strong>Shree Ganesh Tour &amp; Travels</strong>. We've received your details and will confirm your ride shortly. If you've also opened WhatsApp, please send the message to speed up confirmation.</p>
+    <div class="btns">
+      <a href="https://wa.me/919288427458" class="btn btn-wa">💬 Open WhatsApp</a>
+      <a href="/" class="btn btn-home">🏠 Back to Home</a>
+    </div>
+  </div>
+</body>
+</html>
