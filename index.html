@@ -3807,7 +3807,7 @@
     document.getElementById('fPickupTime').value = minDT;
     document.getElementById('fReturnTime').min = minDT;
 
-    // ── BOOKING FORM → WHATSAPP ──
+    // ── BOOKING FORM → EMAIL + WHATSAPP ──
     document.getElementById('bookingForm').addEventListener('submit', function (e) {
       e.preventDefault();
       const pickup = document.getElementById('fPickup').value.trim();
@@ -3822,6 +3822,30 @@
         const d = new Date(dt);
         return d.toLocaleString('en-IN', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true });
       };
+
+      // Button loading state — restore after 1.5s
+      const btn = this.querySelector('button[type="submit"]');
+      const btnSpan = btn.querySelector('span');
+      const originalText = btnSpan.innerHTML;
+      btn.disabled = true;
+      btnSpan.innerHTML = 'Sending…';
+      setTimeout(() => { btn.disabled = false; btnSpan.innerHTML = originalText; }, 1500);
+
+      // Fire-and-forget email notification via Vercel serverless function
+      fetch('/api/send-booking', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          tripType: currentTrip === 'roundtrip' ? 'Round Trip' : 'One Way',
+          pickup,
+          drop,
+          pickupTime: fmt(pTime),
+          returnTime: rTime ? fmt(rTime) : '',
+          car,
+          passengers: pass
+        })
+      }).catch(err => console.error('Email notification failed:', err));
+
       const tripLabel = currentTrip === 'roundtrip' ? `Round Trip\n🔄 *Return:* ${fmt(rTime)}` : 'One Way Trip';
       const msg = `🙏 *New Booking Request*\n*Shree Ganesh Tour & Travels*\n\n🗺️ *Trip Type:* ${currentTrip === 'roundtrip' ? 'Round Trip' : 'One Way'}\n📍 *Pickup:* ${pickup}\n📍 *Drop:* ${drop}\n📅 *Pickup Date & Time:* ${fmt(pTime)}\n${currentTrip === 'roundtrip' ? `🔄 *Return Date & Time:* ${fmt(rTime)}\n` : ''}🚗 *Car:* ${car}\n👥 *Passengers:* ${pass}\n\nPlease confirm availability & fare. Thank you!`;
       window.open('https://wa.me/919288427458?text=' + encodeURIComponent(msg), '_blank');
