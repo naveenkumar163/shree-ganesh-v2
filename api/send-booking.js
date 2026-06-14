@@ -16,7 +16,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { tripType, pickup, drop, pickupTime, returnTime, car, passengers } = req.body;
+  const { name, phone, tripType, pickup, drop, pickupTime, returnTime, car, passengers } = req.body;
 
   const returnRow = returnTime
     ? `<tr>
@@ -41,6 +41,14 @@ export default async function handler(req, res) {
     <!-- Body -->
     <div style="background:#ffffff;padding:8px 0;">
       <table style="width:100%;border-collapse:collapse;">
+        <tr>
+          <td style="padding:12px 16px;color:#64748b;font-size:14px;width:40%;border-bottom:1px solid #f1f5f9;">Customer Name</td>
+          <td style="padding:12px 16px;font-weight:600;color:#0D1F35;border-bottom:1px solid #f1f5f9;">👤 ${name}</td>
+        </tr>
+        <tr>
+          <td style="padding:12px 16px;color:#64748b;font-size:14px;border-bottom:1px solid #f1f5f9;">Phone Number</td>
+          <td style="padding:12px 16px;font-weight:600;color:#0D1F35;border-bottom:1px solid #f1f5f9;">📱 <a href="tel:+91${phone}" style="color:#E8650A;text-decoration:none;">+91 ${phone}</a></td>
+        </tr>
         <tr>
           <td style="padding:12px 16px;color:#64748b;font-size:14px;width:40%;border-bottom:1px solid #f1f5f9;">Trip Type</td>
           <td style="padding:12px 16px;font-weight:600;color:#0D1F35;border-bottom:1px solid #f1f5f9;">🗺️ ${tripType}</td>
