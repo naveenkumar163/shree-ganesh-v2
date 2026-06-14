@@ -3016,6 +3016,15 @@
           </div>
 
           <div class="form-group">
+            <label><span class="licon">👤</span> Your Name</label>
+            <input class="form-input" type="text" id="fName" placeholder="e.g. Rahul Kumar" required>
+          </div>
+          <div class="form-group">
+            <label><span class="licon">📱</span> Mobile Number</label>
+            <input class="form-input" type="tel" id="fPhone" placeholder="e.g. 98765 43210" pattern="[0-9]{10}" maxlength="10" inputmode="numeric" required>
+          </div>
+
+          <div class="form-group">
             <label><span class="licon">📍</span> Pickup Location</label>
             <input class="form-input" type="text" id="fPickup" placeholder="e.g. Patna Junction, Boring Road…" required>
           </div>
@@ -3811,13 +3820,16 @@
     // ── BOOKING FORM → EMAIL + WHATSAPP ──
     document.getElementById('bookingForm').addEventListener('submit', function (e) {
       e.preventDefault();
+      const name = document.getElementById('fName').value.trim();
+      const phone = document.getElementById('fPhone').value.trim();
       const pickup = document.getElementById('fPickup').value.trim();
       const drop = document.getElementById('fDrop').value.trim();
       const pTime = document.getElementById('fPickupTime').value;
       const rTime = document.getElementById('fReturnTime').value;
       const car = document.getElementById('fCar').value;
       const pass = document.getElementById('fPassengers').value;
-      if (!pickup || !drop || !pTime || !car || !pass) { alert('Please fill in all required fields.'); return; }
+      if (!name || !phone || !pickup || !drop || !pTime || !car || !pass) { alert('Please fill in all required fields.'); return; }
+      if (!/^[0-9]{10}$/.test(phone)) { alert('Please enter a valid 10-digit phone number.'); return; }
       if (currentTrip === 'roundtrip' && !rTime) { alert('Please select a return date & time for round trip.'); return; }
       const fmt = dt => {
         const d = new Date(dt);
@@ -3830,6 +3842,8 @@
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          name,
+          phone,
           tripType,
           pickup,
           drop,
@@ -3842,7 +3856,7 @@
 
       // Build WhatsApp URL and open it
       const tripLabel = currentTrip === 'roundtrip' ? `Round Trip\n🔄 *Return:* ${fmt(rTime)}` : 'One Way Trip';
-      const msg = `🙏 *New Booking Request*\n*Shree Ganesh Tour & Travels*\n\n🗺️ *Trip Type:* ${tripType}\n📍 *Pickup:* ${pickup}\n📍 *Drop:* ${drop}\n📅 *Pickup Date & Time:* ${fmt(pTime)}\n${currentTrip === 'roundtrip' ? `🔄 *Return Date & Time:* ${fmt(rTime)}\n` : ''}🚗 *Car:* ${car}\n👥 *Passengers:* ${pass}\n\nPlease confirm availability & fare. Thank you!`;
+      const msg = `🙏 *New Booking Request*\n*Shree Ganesh Tour & Travels*\n\n👤 *Name:* ${name}\n📱 *Phone:* ${phone}\n🗺️ *Trip Type:* ${tripType}\n📍 *Pickup:* ${pickup}\n📍 *Drop:* ${drop}\n📅 *Pickup Date & Time:* ${fmt(pTime)}\n${currentTrip === 'roundtrip' ? `🔄 *Return Date & Time:* ${fmt(rTime)}\n` : ''}🚗 *Car:* ${car}\n👥 *Passengers:* ${pass}\n\nPlease confirm availability & fare. Thank you!`;
       const waUrl = 'https://wa.me/919288427458?text=' + encodeURIComponent(msg);
       window.open(waUrl, '_blank');
       setTimeout(() => { window.location.href = '/thank-you.html'; }, 600);
